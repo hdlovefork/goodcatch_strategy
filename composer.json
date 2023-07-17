@@ -1,0 +1,25 @@
+{
+    "name": "goodcatch/strategy",
+    "autoload": {
+        "psr-4": {
+            "Goodcatch\\Strategy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Goodcatch\\Strategy\\Test\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dean",
+            "email": "1602264241@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    }
+}
