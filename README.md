@@ -76,7 +76,7 @@ $users = [
 此外策略条件也允许嵌套，如下：
 ```php
 [
-    'operator' => 'and',// 这里将operator更改为or
+    'operator' => 'and',
     'conditions' => [
         [
             'operator' => '=',
