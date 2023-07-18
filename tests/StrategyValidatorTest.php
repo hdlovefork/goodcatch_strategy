@@ -2,7 +2,7 @@
 
 namespace Goodcatch\Strategy\Test;
 
-use Goodcatch\Strategy\StrategyConfigValidator;
+use Goodcatch\Strategy\StrategyValidator;
 use PHPUnit\Framework\TestCase;
 
 class StrategyValidatorTest extends TestCase
@@ -24,7 +24,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertTrue($result);
     }
 
@@ -40,7 +40,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertTrue($result);
     }
 
@@ -56,7 +56,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertTrue($result);
     }
 
@@ -72,7 +72,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -148,7 +148,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertTrue($result);
     }
 
@@ -164,7 +164,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -185,7 +185,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -206,7 +206,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -227,7 +227,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertTrue($result);
     }
 
@@ -248,7 +248,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -269,7 +269,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -290,7 +290,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -311,7 +311,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertFalse($result);
     }
 
@@ -337,7 +337,7 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertTrue($result);
     }
 
@@ -363,7 +363,46 @@ class StrategyValidatorTest extends TestCase
             ]
         ];
 
-        $result = StrategyConfigValidator::validateConfig($config);
+        $result = StrategyValidator::validate($config);
         $this->assertTrue($result);
+    }
+
+    /**
+     * 允许$conditions为简单条件
+     * @test
+     */
+    public function the_conditions_can_be_a_simple_condition()
+    {
+        $config =  [
+            'field' => 'age',
+            'operator' => '=',
+            'value' => 18
+        ];
+
+        $result = StrategyValidator::validate($config);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * 多个简单条件不能作为根元素
+     * @test
+     */
+    public function the_multiple_simple_conditions_cannot_be_root_element()
+    {
+        $config =  [
+            [
+                'field' => 'age',
+                'operator' => '=',
+                'value' => 18
+            ],
+            [
+                'field' => 'age',
+                'operator' => '=',
+                'value' => 21
+            ]
+        ];
+
+        $result = StrategyValidator::validate($config);
+        $this->assertFalse($result);
     }
 }

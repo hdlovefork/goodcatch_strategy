@@ -340,4 +340,29 @@ class ComparisonOperatorsTest extends TestCase
         $this->assertCount(3, $result);
     }
 
+    /**
+     * 简单条件测试
+     * @test
+     */
+    public function should_satisfy_simple_condition(){
+        $config =  [
+            'field' => 'age',
+            'operator' => '>',
+            'value' => 18
+        ];
+
+        $testData = [
+            ['age' => 20],
+            ['age' => 25],
+            ['age' => 30],
+            ['age' => 17],
+            ['age' => 31],
+            ['age' => 19],
+            ['age' => 21],
+        ];
+
+        $result = StrategyManager::make($config)->allSatisfied($testData);
+        $this->assertCount(6, $result);
+    }
+
 }

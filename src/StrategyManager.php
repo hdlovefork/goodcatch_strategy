@@ -19,37 +19,33 @@ class StrategyManager implements StrategyInterface
      */
     public static function make($config)
     {
-        // 如果不存在operator字段或者不存在conditions字段，直接报错
-        if (!isset($config['operator']) || !isset($config['conditions'])) {
-            throw new StrategyException('Invalid strategy config');
+        // 验证策略配置是否有效，如果无效则抛出异常
+        StrategyValidator::validate($config);
+        // 如果为简单策略，则直接返回
+        if (!isset($config['conditions'])) {
+            return new StrategyManager(static::makeSimpleStrategy($config));
         }
-        $strategyType = $config['operator'];
+        $operator = $config['operator'];
         $conditions = $config['conditions'];
-
         $strategies = [];
         foreach ($conditions as $condition) {
             if (isset($condition['operator']) && isset($condition['conditions'])) {
-                $subStrategyGroup = self::make($condition);
+                $subStrategyGroup = static::make($condition);
                 $strategies[] = $subStrategyGroup;
             } else {
-                $field = $condition['field'];
-                $operator = $condition['operator'];
-                $value = $condition['value'];
-
-                $strategyClass = self::getStrategyClass($operator);
-                $strategy = new $strategyClass($field, $value);
+                $strategy = static::makeSimpleStrategy($condition);
                 $strategies[] = $strategy;
             }
         }
 
-        if ($strategyType === 'or') {
+        if ($operator === 'or') {
             return new StrategyManager(new OrStrategy($strategies));
-        } elseif ($strategyType === 'and') {
+        } elseif ($operator === 'and') {
             return new StrategyManager(new AndStrategy($strategies));
-        } elseif ($strategyType === 'not') {
+        } elseif ($operator === 'not') {
             return new StrategyManager(new NotStrategy(new AndStrategy($strategies)));
         } else {
-            throw new StrategyException("Unsupported strategy type: $strategyType");
+            throw new StrategyException("Unsupported strategy type: $operator");
         }
     }
 
@@ -82,6 +78,22 @@ class StrategyManager implements StrategyInterface
         }
         // 返回当前命令空间加上类名
         return __NAMESPACE__ . '\\' . $map[$operator];
+    }
+
+    /**
+     * 根据配置生成简单策略
+     * @param $condition
+     * @return mixed
+     * @throws StrategyException
+     */
+    protected static function makeSimpleStrategy($condition)
+    {
+        $field = $condition['field'];
+        $operator = $condition['operator'];
+        $value = $condition['value'];
+
+        $strategyClass = static::getStrategyClass($operator);
+        return new $strategyClass($field, $value);
     }
 
     /**

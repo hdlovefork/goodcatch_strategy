@@ -6,16 +6,11 @@
 ```php
 // 策略定义
 $strategy = [
-    'operator' => 'and',
-    'conditions' => [
-        [
             'operator' => '=',
             'field' => 'age',
             'value' => '18',
-        ]
-    ]
-];
-
+        ];
+        
 // 待测试的一个用户
 $user = [
     'age' => 18,
@@ -35,7 +30,15 @@ $users = [
 ```
 
 # 策略定义
-策略定义是一个数组，数组中包含两个元素，分别是`operator`和`conditions`，`operator`表示`conditions`中的条件之间的关系，`conditions`表示条件数组，`conditions`中的每个元素都是一个条件，条件的格式如下：
+策略定义是一个数组，数组中包含三个元素，分别是`operator`、`field`和`value`，`operator`表示比较运算符，`field`表示字段，`value`表示字段的值，如下：
+```php
+[
+    'operator' => '=',
+    'field' => 'age',
+    'value' => '18',
+]
+```
+复杂策略定义需要包含`operator`和`conditions`两个元素，`operator`表示逻辑运算符，`conditions`表示条件，如下
 ```php
 [
     'operator' => 'and',

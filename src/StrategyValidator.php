@@ -5,36 +5,19 @@ namespace Goodcatch\Strategy;
 /**
  * 策略配置校验器
  */
-class StrategyConfigValidator
+class StrategyValidator
 {
-    public static function validateConfig($config)
+    public static function validate($condition)
     {
-        if (!isset($config['operator']) || !in_array($config['operator'], ['or', 'and', 'not'])) {
-            return false;
-        }
-
-        if (!isset($config['conditions']) || !is_array($config['conditions'])) {
-            return false;
-        }
-
-        foreach ($config['conditions'] as $condition) {
-            if (!self::validateCondition($condition)) {
+        if (isset($condition['conditions'])) {
+            if (!is_array($condition['conditions'])) {
                 return false;
             }
-        }
-
-        return true;
-    }
-
-    public static function validateCondition($condition)
-    {
-        if (isset($condition['operator']) && in_array($condition['operator'], ['or', 'and', 'not'])) {
-            if (!isset($condition['conditions']) || !is_array($condition['conditions'])) {
+            if (!in_array($condition['operator'], ['and', 'or', 'not'])) {
                 return false;
             }
-
             foreach ($condition['conditions'] as $innerCondition) {
-                if (!self::validateCondition($innerCondition)) {
+                if (!self::validate($innerCondition)) {
                     return false;
                 }
             }
@@ -61,5 +44,4 @@ class StrategyConfigValidator
         }
         return true;
     }
-
 }
