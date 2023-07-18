@@ -2,8 +2,10 @@
 
 namespace Goodcatch\Strategy;
 
+use Illuminate\Support\Arr;
+
 /**
- * 等于策略
+ * 等于策略(=)
  */
 class EqualToStrategy implements StrategyInterface {
     private $field;
@@ -18,6 +20,6 @@ class EqualToStrategy implements StrategyInterface {
     {
         if(!isset($data[$this->field]))
             throw new StrategyException("equal to strategy field:{$this->field} not found，data:".json_encode($data));
-        return $data[$this->field] == $this->value;
+        return Arr::get($data, $this->field) == $this->value;
     }
 }

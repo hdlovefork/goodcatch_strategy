@@ -3,7 +3,7 @@
 namespace Goodcatch\Strategy;
 
 /**
- * Or策略
+ * or策略
  */
 class OrStrategy implements StrategyInterface {
     private $strategies;

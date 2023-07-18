@@ -2,6 +2,11 @@
 
 namespace Goodcatch\Strategy;
 
+use Illuminate\Support\Arr;
+
+/**
+ * 小于等于策略(<=)
+ */
 class LessThanOrEqualToStrategy implements StrategyInterface {
     private $field;
     private $value;
@@ -15,6 +20,6 @@ class LessThanOrEqualToStrategy implements StrategyInterface {
     {
         if(!isset($data[$this->field]))
             throw new StrategyException("less than or equal to strategy field:{$this->field} not found，data:".json_encode($data));
-        return $data[$this->field] <= $this->value;
+        return Arr::get($data, $this->field) <= $this->value;
     }
 }

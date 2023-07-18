@@ -3,7 +3,7 @@
 namespace Goodcatch\Strategy;
 
 /**
- * Not策略
+ * not策略
  */
 class NotStrategy implements StrategyInterface
 {

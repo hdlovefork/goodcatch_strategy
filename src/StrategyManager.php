@@ -53,7 +53,12 @@ class StrategyManager implements StrategyInterface
         }
     }
 
-    // Helper function to map operators to strategy classes
+    /**
+     * 根据操作符获取策略类
+     * @param $operator
+     * @return string
+     * @throws StrategyException
+     */
     protected static function getStrategyClass($operator)
     {
         $map = [
@@ -79,6 +84,11 @@ class StrategyManager implements StrategyInterface
         return __NAMESPACE__ . '\\' . $map[$operator];
     }
 
+    /**
+     * 判断是否满足策略
+     * @param $data array 要判断的多个数据
+     * @return array 返回所有满足策略的数据
+     */
     public function allSatisfied($data): array
     {
         $items = is_array($data) ? $data : [$data];
@@ -91,6 +101,11 @@ class StrategyManager implements StrategyInterface
         return $result;
     }
 
+    /**
+     * 判断是否满足策略
+     * @param $data array 要判断的单个数据
+     * @return bool 是否满足策略，满足返回true，否则返回false
+     */
     public function isSatisfied($data): bool
     {
         return $this->strategy->isSatisfied($data);

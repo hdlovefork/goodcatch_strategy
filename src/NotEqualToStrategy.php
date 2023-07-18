@@ -2,8 +2,10 @@
 
 namespace Goodcatch\Strategy;
 
+use Illuminate\Support\Arr;
+
 /**
- * 不等于策略
+ * 不等于策略(!=)
  */
 class NotEqualToStrategy implements StrategyInterface
 {
@@ -20,6 +22,6 @@ class NotEqualToStrategy implements StrategyInterface
     {
         if (!isset($data[$this->field]))
             throw new StrategyException("not equal to strategy field:{$this->field} not found，data:" . json_encode($data));
-        return $data[$this->field] != $this->value;
+        return Arr::get($data, $this->field) != $this->value;
     }
 }

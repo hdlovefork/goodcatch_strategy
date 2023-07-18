@@ -2,7 +2,10 @@
 
 namespace Goodcatch\Strategy;
 
-// 定义策略接口
+/**
+ * 策略接口
+ * Class NotBetweenStrategy
+ */
 interface StrategyInterface
 {
     /**
